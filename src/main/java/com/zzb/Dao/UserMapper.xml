@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.zzb.Dao.UserMapper">
+ 	<resultMap type="com.zzb.pojo.Department" id="DepartmentList">
+ 		<id property="department_id" column="department_id"/>
+ 		<result property="department_name" column="department_name"/>
+ 		<result property="department_user" column="department_user"/>
+ 		<result property="department_time" column="department_time"/>
+ 		<collection property="UserList" ofType="com.zzb.pojo.User">
+ 			<id property="user_id" column="user_id"/>
+ 			<result property="user_name" column="user_name"/>
+ 			<result property="user_departement" column="user_departement"/>
+ 			<result property="user_salary" column="user_salary"/>
+ 			<result property="user_address" column="user_address"/>
+ 		</collection>
+ 	</resultMap>
+ 	
+ 	<!-- 查询部门下的员工信息 -->
+ 	<select id="getDepartmentList" resultMap="DepartmentList">
+ 		SELECT d.`department_id`,d.`department_name`,d.`department_user`,d.`department_time`,
+		u.`user_id`,u.`user_name`,u.`user_departement`,u.`user_salary`,u.`user_address`
+		FROM `department` AS d
+		LEFT JOIN `user` AS u
+		ON d.`department_id` =u.user_departement
+ 	</select>
+ 	
+ 	<!-- 添加员工信息 -->
+ 	<insert id="addUser" parameterType="com.zzb.pojo.User">
+ 		INSERT INTO `user`(`user_name`,`user_departement`,`user_salary`,`user_address`)
+		VALUES(#{user_name},#{user_departement},#{user_salary},#{user_address});
+ 	</insert>
+ 	
+ 	<!-- 数据回显 -->
+ 	<select id="echoUser" resultType="com.zzb.pojo.User">
+ 		SELECT u.`user_id`,u.`user_name`,u.`user_departement`,u.`user_salary`,u.`user_address`,
+		d.`department_id`,d.`department_name`,d.`department_user`,d.`department_time`
+		FROM `user` AS u
+		LEFT JOIN `department` AS d
+		ON d.`department_id` =u.user_departement
+		WHERE `user_id` = #{user_id};
+ 	</select>
+ 	
+ 	<!-- 修改员工信息 -->
+ 	<update id="updateUser" parameterType="com.zzb.pojo.User">
+ 		UPDATE `user` SET `user_name`= #{user_name},`user_departement`=#{user_departement},`user_salary`=#{user_salary},`user_address`=#{user_address}
+		WHERE `user_id`=#{user_id};
+ 	</update>
+ 	
+ 	<!-- 删除员工信息 -->
+ 	<delete id="deleteUser" parameterType="Integer">
+ 		DELETE FROM `user` WHERE `user_id` = #{user_id};
+ 	</delete>
+ 	
+ </mapper>
+ 
+ 
+ 
+ 
+ 

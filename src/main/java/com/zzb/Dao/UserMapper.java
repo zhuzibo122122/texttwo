@@ -20,4 +20,5 @@ public interface UserMapper {
 	int deleteUser(@Param("user_id")Integer user_id);
 	
 	//ghhjhjhj
+	//jhghjhjh
 }
